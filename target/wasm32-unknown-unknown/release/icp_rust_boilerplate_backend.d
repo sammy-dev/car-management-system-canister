@@ -1,0 +1,1 @@
+/home/samdev/car-management-system-canister/target/wasm32-unknown-unknown/release/icp_rust_boilerplate_backend.wasm: /home/samdev/car-management-system-canister/src/icp_rust_boilerplate_backend/src/lib.rs

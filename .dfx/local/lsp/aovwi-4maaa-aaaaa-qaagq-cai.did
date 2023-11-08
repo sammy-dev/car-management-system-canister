@@ -1,0 +1,29 @@
+type Car = record {
+  id : nat64;
+  is_booked : bool;
+  model : text;
+  updated_at : opt nat64;
+  owner : text;
+  make : text;
+  color : text;
+  year : nat32;
+  created_at : nat64;
+};
+type CarPayload = record {
+  is_booked : bool;
+  model : text;
+  owner : text;
+  make : text;
+  color : text;
+  year : nat32;
+};
+type Error = variant { NotFound : record { msg : text } };
+type Result = variant { Ok : Car; Err : Error };
+type Result_1 = variant { Ok : bool; Err : Error };
+service : {
+  add_car : (CarPayload) -> (opt Car);
+  delete_car : (nat64) -> (Result);
+  get_car : (nat64) -> (Result) query;
+  is_booked : (nat64) -> (Result_1) query;
+  update_car : (nat64, CarPayload) -> (Result);
+}
