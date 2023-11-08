@@ -1,4 +1,4 @@
-# icp_rust_message_board_contract
+# icp_rust_car_management_system_canister
 
 ### Requirements
 * rustc 1.64 or higher
