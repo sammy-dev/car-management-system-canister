@@ -30,7 +30,17 @@ export interface Reservation {
 export interface _SERVICE {
   'add_car' : ActorMethod<[CarPayload], [] | [Car]>,
   'add_customer' : ActorMethod<[string, string], [] | [Customer]>,
+  'cancel_reservation' : ActorMethod<
+    [bigint],
+    { 'Ok' : null } |
+      { 'Err' : Error }
+  >,
   'delete_car' : ActorMethod<[bigint], { 'Ok' : Car } | { 'Err' : Error }>,
+  'delete_customer' : ActorMethod<
+    [bigint],
+    { 'Ok' : Customer } |
+      { 'Err' : Error }
+  >,
   'generate_report' : ActorMethod<[], Array<Car>>,
   'get_car' : ActorMethod<[bigint], { 'Ok' : Car } | { 'Err' : Error }>,
   'get_customer' : ActorMethod<

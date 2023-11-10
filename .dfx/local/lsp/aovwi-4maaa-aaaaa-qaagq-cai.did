@@ -1,5 +1,5 @@
 type Car = record {
-  id : nat64;
+  id: nat64;
   make: text;
   model: text;
   year: nat32;
@@ -40,8 +40,10 @@ service : {
   is_booked: (nat64) -> (variant { Ok: bool; Err: Error }) query;
   update_car: (nat64, CarPayload) -> (variant { Ok: Car; Err: Error });
   add_customer: (text, text) -> (opt Customer);
+  delete_customer: (nat64) -> (variant { Ok: Customer; Err: Error });
   get_customer: (nat64) -> (variant { Ok: Customer; Err: Error }) query;
   make_reservation: (nat64, nat64) -> (variant { Ok: Reservation; Err: Error });
+  cancel_reservation: (nat64) -> (variant { Ok: null; Err: Error });
   get_reservation: (nat64) -> (variant { Ok: Reservation; Err: Error }) query;
   generate_report: () -> (vec Car);
 };

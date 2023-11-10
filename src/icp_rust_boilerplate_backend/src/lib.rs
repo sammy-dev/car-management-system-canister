@@ -236,6 +236,23 @@ fn _get_customer(id: &u64) -> Option<Customer> {
 }
 
 #[ic_cdk::update]
+fn delete_customer(id: u64) -> Result<Customer, Error> {
+    match _get_customer(&id) {
+        Some(customer) => {
+            // Assuming MemoryId::new(2) is reserved for customer storage
+            let customer_storage = MEMORY_MANAGER.with(|m| m.borrow().get(MemoryId::new(2)));
+            StableBTreeMap::<u64, Customer, Memory>::init(customer_storage)
+                .borrow_mut()
+                .remove(&id);
+            Ok(customer)
+        }
+        None => Err(Error::NotFound {
+            msg: format!("a customer with id={} not found", id),
+        }),
+    }
+}
+
+#[ic_cdk::update]
 fn make_reservation(car_id: u64, customer_id: u64) -> Result<Reservation, Error> {
     match (_get_car(&car_id), _get_customer(&customer_id)) {
         (Some(_), Some(_)) => {
@@ -279,6 +296,23 @@ fn _get_reservation(car_id: &u64) -> Option<Reservation> {
     StableBTreeMap::<u64, Reservation, Memory>::init(reservation_storage)
         .borrow()
         .get(car_id)
+}
+
+#[ic_cdk::update]
+fn cancel_reservation(car_id: u64) -> Result<(), Error> {
+    match _get_reservation(&car_id) {
+        Some(_) => {
+            // Assuming MemoryId::new(3) is reserved for reservation storage
+            let reservation_storage = MEMORY_MANAGER.with(|m| m.borrow().get(MemoryId::new(3)));
+            StableBTreeMap::<u64, Reservation, Memory>::init(reservation_storage)
+                .borrow_mut()
+                .remove(&car_id);
+            Ok(())
+        }
+        None => Err(Error::NotFound {
+            msg: format!("a reservation for car_id={} not found", car_id),
+        }),
+    }
 }
 
 #[ic_cdk::query]

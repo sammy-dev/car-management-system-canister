@@ -32,9 +32,19 @@ export const idlFactory = ({ IDL }) => {
   return IDL.Service({
     'add_car' : IDL.Func([CarPayload], [IDL.Opt(Car)], []),
     'add_customer' : IDL.Func([IDL.Text, IDL.Text], [IDL.Opt(Customer)], []),
+    'cancel_reservation' : IDL.Func(
+        [IDL.Nat64],
+        [IDL.Variant({ 'Ok' : IDL.Null, 'Err' : Error })],
+        [],
+      ),
     'delete_car' : IDL.Func(
         [IDL.Nat64],
         [IDL.Variant({ 'Ok' : Car, 'Err' : Error })],
+        [],
+      ),
+    'delete_customer' : IDL.Func(
+        [IDL.Nat64],
+        [IDL.Variant({ 'Ok' : Customer, 'Err' : Error })],
         [],
       ),
     'generate_report' : IDL.Func([], [IDL.Vec(Car)], []),

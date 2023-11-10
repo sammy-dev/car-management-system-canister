@@ -1,29 +1,47 @@
 type Car = record {
   id : nat64;
-  is_booked : bool;
-  model : text;
-  updated_at : opt nat64;
-  owner : text;
-  make : text;
-  color : text;
-  year : nat32;
-  created_at : nat64;
+  make: text;
+  model: text;
+  year: nat32;
+  color: text;
+  created_at: nat64;
+  updated_at: opt nat64;
+  owner: text;
+  is_booked: bool;
 };
+
 type CarPayload = record {
-  is_booked : bool;
-  model : text;
-  owner : text;
-  make : text;
-  color : text;
-  year : nat32;
+  make: text;
+  model: text;
+  year: nat32;
+  color: text;
+  owner: text;
+  is_booked: bool;
 };
-type Error = variant { NotFound : record { msg : text } };
-type Result = variant { Ok : Car; Err : Error };
-type Result_1 = variant { Ok : bool; Err : Error };
+
+type Customer = record {
+  id: nat64;
+  name: text;
+  contact: text;
+};
+
+type Reservation = record {
+  car_id: nat64;
+  customer_id: nat64;
+  reservation_time: nat64;
+};
+
+type Error = variant { NotFound: record { msg: text } };
+
 service : {
-  add_car : (CarPayload) -> (opt Car);
-  delete_car : (nat64) -> (Result);
-  get_car : (nat64) -> (Result) query;
-  is_booked : (nat64) -> (Result_1) query;
-  update_car : (nat64, CarPayload) -> (Result);
-}
+  add_car: (CarPayload) -> (opt Car);
+  delete_car: (nat64) -> (variant { Ok: Car; Err: Error });
+  get_car: (nat64) -> (variant { Ok: Car; Err: Error }) query;
+  is_booked: (nat64) -> (variant { Ok: bool; Err: Error }) query;
+  update_car: (nat64, CarPayload) -> (variant { Ok: Car; Err: Error });
+  add_customer: (text, text) -> (opt Customer);
+  get_customer: (nat64) -> (variant { Ok: Customer; Err: Error }) query;
+  make_reservation: (nat64, nat64) -> (variant { Ok: Reservation; Err: Error });
+  get_reservation: (nat64) -> (variant { Ok: Reservation; Err: Error }) query;
+  generate_report: () -> (vec Car);
+};
